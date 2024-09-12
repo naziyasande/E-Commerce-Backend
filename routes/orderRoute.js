@@ -5,7 +5,7 @@ const {
   getOrder,
   updateOrderStatus,
   deleteOrder,
-} = require('../controllers/orderController');
+} = require('../controllers/orderController.js');
 const { protect, admin } = require('../middleware/authMiddleware');
 
 const router = express.Router();

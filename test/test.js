@@ -1,256 +1,157 @@
 // Wrapping the test cases in an async function for dynamic import
 (async () => {
-    // Dynamically import chai and sinon
-   // const //chai = await import('chai');
-    const sinon = require('sinon');
-    const chai=require('chai')
-    // Destructure required chai methods
-    const { expect } = chai;
-  
-    // Importing controller and model dynamically
-    const { createProduct, getAllProducts, getProduct, updateProduct, deleteProduct } = await import('../controllers/productController.js');
-    const Product = await import('../models/productModel.js');
-  
-    // Mocha test cases
-    describe('Product Controller', () => {
-  
-      // Test createProduct function
-      describe('createProduct', () => {
-        it('should create a new product and return it', async () => {
-          // Mock request and response objects
-          const req = {
-            body: {
-              name: 'Test Product',
-              description: 'Test Description',
-              price: 100,
-              category: 'Test Category',
-              stock: 10
-            }
-          };
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          // Stub the save method on the Product model
-          const productStub = sinon.stub(Product.default.prototype, 'save').resolves(req.body);
-  
-          // Call the createProduct controller function
-          await createProduct(req, res);
-  
-          // Assertions
-          expect(productStub.calledOnce).to.be.true;
-          expect(res.status.calledWith(201)).to.be.true;
-          expect(res.json.calledWith(req.body)).to.be.true;
-  
-          // Restore the original method
-          productStub.restore();
-        });
-      });
-  
-      // Test getAllProducts function
-      describe('getAllProducts', () => {
-        it('should return all products', async () => {
-          // Mock request and response objects
-          const req = {};
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          const products = [
-            { name: 'Product 1', description: 'Description 1', price: 100 },
-            { name: 'Product 2', description: 'Description 2', price: 200 }
-          ];
-  
-          // Stub the find method on the Product model
-          const productFindStub = sinon.stub(Product.default, 'find').resolves(products);
-  
-          // Call the getAllProducts controller function
-          await getAllProducts(req, res);
-  
-          // Assertions
-          expect(productFindStub.calledOnce).to.be.true;
-          expect(res.status.calledWith(200)).to.be.true;
-          expect(res.json.calledWith(products)).to.be.true;
-  
-          // Restore the original method
-          productFindStub.restore();
-        });
-      });
-  
-      // Test getProduct function
-      describe('getProduct', () => {
-        it('should return a single product by id', async () => {
-          // Mock request and response objects
-          const req = { params: { id: '60b8d295f10f4d3f8c6c84e5' } };
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          const product = { name: 'Product 1', description: 'Description 1', price: 100 };
-  
-          // Stub the findById method on the Product model
-          const productFindByIdStub = sinon.stub(Product.default, 'findById').resolves(product);
-  
-          // Call the getProduct controller function
-          await getProduct(req, res);
-  
-          // Assertions
-          expect(productFindByIdStub.calledOnce).to.be.true;
-          expect(productFindByIdStub.calledWith(req.params.id)).to.be.true;
-          expect(res.status.calledWith(200)).to.be.true;
-          expect(res.json.calledWith(product)).to.be.true;
-  
-          // Restore the original method
-          productFindByIdStub.restore();
-        });
+  // Dynamically import chai and chaiHttp
+  const chai = await import('chai');
+  const chaiHttp = await import('chai-http');
+  const app = (await import('../app.js')).default; // Assuming your Express app is in app.js
 
-        it('should return 404 if product not found', async () => {
-          // Mock request and response objects
-          const req = { params: { id: 'nonexistentid' } };
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          // Stub the findById method on the Product model
-          const productFindByIdStub = sinon.stub(Product.default, 'findById').resolves(null);
-  
-          // Call the getProduct controller function
-          await getProduct(req, res);
-  
-          // Assertions
-          expect(productFindByIdStub.calledOnce).to.be.true;
-          expect(productFindByIdStub.calledWith(req.params.id)).to.be.true;
-          expect(res.status.calledWith(404)).to.be.true;
-          expect(res.json.calledWith({ message: 'Product not found' })).to.be.true;
-  
-          // Restore the original method
-          productFindByIdStub.restore();
-        });
-      });
-  
-      // Test updateProduct function
-      describe('updateProduct', () => {
-        it('should update a product and return it', async () => {
-          // Mock request and response objects
-          const req = {
-            params: { id: '60b8d295f10f4d3f8c6c84e5' },
-            body: {
-              name: 'Updated Product',
-              description: 'Updated Description',
-              price: 150
-            }
-          };
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          const updatedProduct = { ...req.body, _id: req.params.id };
-  
-          // Stub the findByIdAndUpdate method on the Product model
-          const productFindByIdAndUpdateStub = sinon.stub(Product.default, 'findByIdAndUpdate').resolves(updatedProduct);
-  
-          // Call the updateProduct controller function
-          await updateProduct(req, res);
-  
-          // Assertions
-          expect(productFindByIdAndUpdateStub.calledOnce).to.be.true;
-          expect(productFindByIdAndUpdateStub.calledWith(req.params.id, req.body, { new: true })).to.be.true;
-          expect(res.status.calledWith(200)).to.be.true;
-          expect(res.json.calledWith(updatedProduct)).to.be.true;
-  
-          // Restore the original method
-          productFindByIdAndUpdateStub.restore();
-        });
+  chai.use(chaiHttp);
+  const { expect } = chai;
 
-        it('should return 404 if product to update not found', async () => {
-          // Mock request and response objects
-          const req = {
-            params: { id: 'nonexistentid' },
-            body: {
-              name: 'Updated Product',
-              description: 'Updated Description',
-              price: 150
-            }
-          };
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          // Stub the findByIdAndUpdate method on the Product model
-          const productFindByIdAndUpdateStub = sinon.stub(Product.default, 'findByIdAndUpdate').resolves(null);
-  
-          // Call the updateProduct controller function
-          await updateProduct(req, res);
-  
-          // Assertions
-          expect(productFindByIdAndUpdateStub.calledOnce).to.be.true;
-          expect(productFindByIdAndUpdateStub.calledWith(req.params.id, req.body, { new: true })).to.be.true;
-          expect(res.status.calledWith(404)).to.be.true;
-          expect(res.json.calledWith({ message: 'Product not found' })).to.be.true;
-  
-          // Restore the original method
-          productFindByIdAndUpdateStub.restore();
+  // User Authentication Tests
+  describe('User Authentication', () => {
+    it('should register a new user', (done) => {
+      chai.request(app)
+        .post('/users/register')
+        .send({
+          name: 'Test User',
+          email: 'test@example.com',
+          password: 'strongPassword',
+          role: 'user',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.message).to.equal('User registered successfully');
+          done();
         });
-      });
-  
-      // Test deleteProduct function
-      describe('deleteProduct', () => {
-        it('should delete a product by id', async () => {
-          // Mock request and response objects
-          const req = { params: { id: '60b8d295f10f4d3f8c6c84e5' } };
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          // Stub the findByIdAndDelete method on the Product model
-          const productFindByIdAndDeleteStub = sinon.stub(Product.default, 'findByIdAndDelete').resolves({ _id: req.params.id });
-  
-          // Call the deleteProduct controller function
-          await deleteProduct(req, res);
-  
-          // Assertions
-          expect(productFindByIdAndDeleteStub.calledOnce).to.be.true;
-          expect(productFindByIdAndDeleteStub.calledWith(req.params.id)).to.be.true;
-          expect(res.status.calledWith(200)).to.be.true;
-          expect(res.json.calledWith({ message: 'Product deleted successfully' })).to.be.true;
-  
-          // Restore the original method
-          productFindByIdAndDeleteStub.restore();
-        });
-
-        it('should return 404 if product to delete not found', async () => {
-          // Mock request and response objects
-          const req = { params: { id: 'nonexistentid' } };
-          const res = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis()
-          };
-  
-          // Stub the findByIdAndDelete method on the Product model
-          const productFindByIdAndDeleteStub = sinon.stub(Product.default, 'findByIdAndDelete').resolves(null);
-  
-          // Call the deleteProduct controller function
-          await deleteProduct(req, res);
-  
-          // Assertions
-          expect(productFindByIdAndDeleteStub.calledOnce).to.be.true;
-          expect(productFindByIdAndDeleteStub.calledWith(req.params.id)).to.be.true;
-          expect(res.status.calledWith(404)).to.be.true;
-          expect(res.json.calledWith({ message: 'Product not found' })).to.be.true;
-  
-          // Restore the original method
-          productFindByIdAndDeleteStub.restore();
-        });
-      });
-  
-      // Run the tests
-      run();
     });
-  })();
+
+    it('should login a user and return a JWT token', (done) => {
+      chai.request(app)
+        .post('/users/login')
+        .send({
+          email: 'test@example.com',
+          password: 'strongPassword',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.token).to.be.a('string');
+          done();
+        });
+    });
+  });
+
+  // Product API Tests (Admin-only)
+  describe('Product API (Admin-only)', () => {
+    let accessToken;
+    let productId; // Store the ID of the created product
+
+    before((done) => {
+      chai.request(app)
+        .post('/users/login')
+        .send({
+          email: 'admin@example.com', // Use a valid admin email
+          password: 'adminPassword',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          accessToken = res.body.token; // Store the token for later use
+          done();
+        });
+    });
+
+    it('should create a new product', (done) => {
+      chai.request(app)
+        .post('/products')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          name: 'Test Product',
+          description: 'Product description',
+          price: 19.99,
+          category: 'Electronics',
+          stock: 10,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.message).to.equal('Product created successfully');
+          productId = res.body.product._id; // Store product ID for later use
+          done();
+        });
+    });
+
+    it('should retrieve a single product by ID', (done) => {
+      chai.request(app)
+        .get(`/products/${productId}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body).to.have.property('name', 'Test Product');
+          done();
+        });
+    });
+
+    it('should update a product by ID', (done) => {
+      chai.request(app)
+        .put(`/products/${productId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          name: 'Updated Product',
+          description: 'Updated description',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.message).to.equal('Product updated successfully');
+          done();
+        });
+    });
+
+    it('should delete a product by ID', (done) => {
+      chai.request(app)
+        .delete(`/products/${productId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          expect(res.body.message).to.equal('Product deleted successfully');
+          done();
+        });
+    });
+  });
+
+  // Order API Tests
+  describe('Order API', () => {
+    let userAccessToken;
+
+    before((done) => {
+      chai.request(app)
+        .post('/users/login')
+        .send({
+          email: 'user@example.com', // Use a valid user email
+          password: 'userPassword',
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          userAccessToken = res.body.token; // Store the user's token for later use
+          done();
+        });
+    });
+
+    it('should place an order', (done) => {
+      chai.request(app)
+        .post('/orders')
+        .set('Authorization', `Bearer ${userAccessToken}`)
+        .send({
+          product: productId, // Use the productId from previous tests
+          quantity: 2,
+        })
+        .end((err, res) => {
+          expect(res).to.have.status(201);
+          expect(res.body.message).to.equal('Order placed successfully');
+          done();
+        });
+    });
+
+    // You can add more tests for updating order status (admin-only) or retrieving orders
+  });
+
+  // Run the tests
+  run();
+})();

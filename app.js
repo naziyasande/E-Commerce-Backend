@@ -6,7 +6,7 @@ const connectDB = require('./config/db');
 
 // Import route files
 const authRoutes = require('./routes/authRoute.js');
-const productRoutes = require('./routes/productRoute.js');
+const productRoutes = require('./routes/productRoute');
 const orderRoutes = require('./routes/orderRoute.js');
 
 const app = express();

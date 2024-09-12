@@ -13,7 +13,7 @@ exports.createProduct = async (req, res) => {
 };
 
 // Get all products
-exports.getAllProducts = async (req, res) => {
+exports.getAllProducts = async (_req, res) => {
   try {
     const products = await Product.find();
     res.status(200).json(products);

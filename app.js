@@ -1,6 +1,10 @@
 const dotenv = require("dotenv");
 dotenv.config();
 
+
+const cookieParser = require("cookie-parser");
+
+
 const express = require('express');
 const connectDB = require('./config/db');
 
@@ -14,6 +18,9 @@ const port = process.env.PORT || 5000; // Use the port from environment variable
 
 // Connect to the database
 connectDB();
+
+app.use(cookieParser());
+
 
 // Middleware
 app.use(express.json()); // For parsing application/json

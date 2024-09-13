@@ -29,10 +29,10 @@ cd e-commerce-backend
 Install the dependencies:
 npm install
 
-Create a .env file in the root directory and add the following environment variables:
-PORT=5000
-MONGO_URI=your_mongo_database_uri
-JWT_SECRET=your_secret_key
+Create a .env file in the root directory and add the following environment variables: <br>
+PORT=5000 <br>
+MONGO_URI=your_mongo_database_uri <br>
+JWT_SECRET=your_secret_key <br>
 
 Start the server:
 npm start

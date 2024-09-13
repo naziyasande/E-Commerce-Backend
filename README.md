@@ -37,7 +37,7 @@ JWT_SECRET=your_secret_key <br>
 Start the server:
 npm start
 
-The server should now be running on.
+The server should now be running on http://localhost:5000
 
 
 # API Endpoints

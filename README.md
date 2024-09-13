@@ -49,7 +49,7 @@ Download the Postman collection JSON file from the repository
 Postman Collection JSON: E commerce backend.postman_collection.json
 
 You can also import the collection using the following link:
-Postman Collection Link: 
+Postman Collection Link: https://api.postman.com/collections/38295206-80dcb74c-1044-4188-b8d1-503a6388c9c0?access_key=PMAT-01J7KN4YX3SKS35K257RGJGT5T
 Import the JSON file or use the link to directly import the collection into Postman.
 
 After importing, ensure to set the JWT token in the Postman collection's environment for endpoints that require authentication (such as product management or order placement).

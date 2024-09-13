@@ -1,6 +1,6 @@
 # E-Commerce-Backend
 E-Commerce backend with JWT-based authentication. Users can register, log in, view products, and place orders.<br>
-APIs for products and orders are secured, with bcrypt for password hashing. Includes unit tests using Mocha and Postman for API testing.
+APIs for products and orders are secured, with bcrypt for password hashing. Postman for API testing.
 
 # Features
 User authentication (register, login, JWT token-based access) <br>

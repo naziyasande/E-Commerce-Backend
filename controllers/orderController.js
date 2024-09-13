@@ -16,7 +16,7 @@ exports.createOrder = async (req, res) => {
     const totalPrice = product.price * quantity;
 
     const order = new Order({
-      user: req.user.id,  // assuming req.user contains authenticated user
+      user: req.user.id,  
       product: productId,
       quantity,
       totalPrice,

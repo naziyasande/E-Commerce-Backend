@@ -2,21 +2,21 @@
 E-Commerce backend with JWT-based authentication. Users can register, log in, view products, and place orders. Admins can manage products (CRUD) and update order statuses. APIs for products and orders are secured, with bcrypt for password hashing. Includes unit tests using Mocha and Postman for API testing.
 
 # Features
-User authentication (register, login, JWT token-based access)
-Product management (create, update, delete products) 
-Browse products (for all users)
-Place and manage orders
-MongoDB database integration
+User authentication (register, login, JWT token-based access) <br>
+Product management (create, update, delete products) <br>
+Browse products (for all users)  <br>
+Place and manage orders <br>
+MongoDB database integration <br>
 
 # Technologies Used
-Node.js with Express.js for the backend
-MongoDB for the database
-JWT for user authentication
+Node.js with Express.js for the backend <br>
+MongoDB for the database <br>
+JWT for user authentication <br>
 
 # Prerequisites
-Node.js (v14 or higher)
-MongoDB (or access to a MongoDB Atlas instance)
-Postman for API testing
+Node.js (v14 or higher) <br>
+MongoDB (or access to a MongoDB Atlas instance) <br>
+Postman for API testing <br>
 
 # Setup Instructions
 

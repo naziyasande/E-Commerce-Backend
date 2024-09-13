@@ -21,7 +21,7 @@ Postman for API testing
 # Setup Instructions
 
 Clone the repository:
-git clone https://github.com/naziyasande/e-commerce-backend.git
+git clone 
 
 Navigate to the project directory:
 cd e-commerce-backend
@@ -37,7 +37,7 @@ JWT_SECRET=your_secret_key
 Start the server:
 npm start
 
-The server should now be running on http://localhost:5000.
+The server should now be running on.
 
 
 # API Endpoints
@@ -49,7 +49,7 @@ Download the Postman collection JSON file from the repository
 Postman Collection JSON: E commerce backend.postman_collection.json
 
 You can also import the collection using the following link:
-Postman Collection Link: [API Postman Collection](https://api.postman.com/collections/38295206-80dcb74c-1044-4188-b8d1-503a6388c9c0?access_key=PMAT-01J7KN4YX3SKS35K257RGJGT5T)
+Postman Collection Link: 
 Import the JSON file or use the link to directly import the collection into Postman.
 
 After importing, ensure to set the JWT token in the Postman collection's environment for endpoints that require authentication (such as product management or order placement).

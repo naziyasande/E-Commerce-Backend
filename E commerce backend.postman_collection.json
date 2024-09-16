@@ -175,6 +175,99 @@
 				"header": []
 			},
 			"response": []
+		},
+		{
+			"name": "Fetching product by id",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "naziya",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/api/products/products/66e2c4f8cb58ce4426c73bfd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products",
+						"products",
+						"66e2c4f8cb58ce4426c73bfd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update the product by id (admin only)",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "naziya",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Updated Laptop\",\r\n  \"description\": \"High-performance laptop with updated features\",\r\n  \"price\": 1200,\r\n  \"category\": \"Electronics\",\r\n  \"stock\": 8\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/products/products/66e2c4f8cb58ce4426c73bfd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products",
+						"products",
+						"66e2c4f8cb58ce4426c73bfd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete product (admin only)",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "naziya",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:5000/api/products/products/66e2c4f8cb58ce4426c73bfd",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"products",
+						"products",
+						"66e2c4f8cb58ce4426c73bfd"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
